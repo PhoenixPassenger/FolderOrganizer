@@ -1,16 +1,9 @@
 {
     "path": "Desktop/teste",
     "folder": {
-        "folderName": "Teste",
-        "dataTypes": "1,2,3,4",
+        "folderName": "jpg",
+        "dataTypes": "jpg",
         "folder":{
-            "folderName": "Teste",
-            "dataTypes": "1,2,3,4",
-            "folder":{
-                "folderName": "Caralhou",
-                "dataTypes": "1,2,3,4",
-                "folder" : {}
-            }
         }
     }
     

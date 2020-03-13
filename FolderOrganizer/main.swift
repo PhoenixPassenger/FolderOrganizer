@@ -1,4 +1,4 @@
-#!/usr/bin/swift
+//#!/usr/bin/swift
 //
 //  main.swift
 //  FolderOrganizer
@@ -8,6 +8,9 @@
 //
 
 
+import Commander
+
+import ColorizeSwift
 
 import Foundation
 
@@ -34,92 +37,107 @@ func getJson() -> FilePaths? {
     return object
 }
 
-//CONSTANTS
-let fileManager = FileManager.default
-let home = fileManager.homeDirectoryForCurrentUser
-var extensions  = [String]()
-let fm = Controller.init()
-var set = CharacterSet()
-set.insert(charactersIn: ", ;.")
-
-let dadosJSon = getJson()
-guard let unJson = dadosJSon else {
-    exit(0)
-}
-
-guard let fileToSniff = unJson.path else {
-    exit(0)
-}
-
-let dirURL = home.appendingPathComponent(fileToSniff)
-let fileURLs = try fileManager.contentsOfDirectory(at: dirURL, includingPropertiesForKeys: nil)
-
-
-
-
-for file in fileURLs {
-    if !extensions.contains(file.pathExtension) {
-        extensions.append(file.pathExtension)
+func listAllFiles(_ path : String)throws {
+    let con = Controller.init()
+    let fileManager = FileManager.default
+    let home = fileManager.homeDirectoryForCurrentUser
+    let fullPath =  home.appendingPathComponent(path)
+    let files = con.readFiles(folder: fullPath)
+    for file in files{
+        if file.pathExtension.isEmpty {
+            print((file.lastPathComponent).bold().colorize(.darkSeaGreen3_2, background: .black))
+        }else{
+            print((file.lastPathComponent).bold().colorize(.cyan2, background: .black))
+        }
+        
     }
 }
 
 
-extensions.remove(at: 0)
 
-for ext in extensions{
-    print(extensions.firstIndex(of: ext)!+1, ":", ext)
-}
-
-guard var fileType = readLine() else {
-    exit(0)
-}
-
-let choosed = fileType.components(separatedBy: set)
-
-
-for choose in choosed{
-    var newDirectory = try fm.createFolder(dirURL, extensions[Int(choose)! - 1])
+func transferAllOfType(_ path : String) throws {
+    let fileManager = FileManager.default
+    let home = fileManager.homeDirectoryForCurrentUser
+    var extensions  = [String]()
+    let fm = Controller.init()
+    var set = CharacterSet()
+    set.insert(charactersIn: ", ;.")
+    
+    //    let dadosJSon = getJson()
+    //    guard let unJson = dadosJSon else {
+    //        exit(0)
+    //    }
+    //
+    //    guard let fileToSniff = unJson.path else {
+    //        exit(0)
+    //    }
+    let fileToSniff:String = path
+    let dirURL = home.appendingPathComponent(fileToSniff)
+    let fileURLs = try fileManager.contentsOfDirectory(at: dirURL, includingPropertiesForKeys: nil)
+    
+    
+    
+    
     for file in fileURLs {
-        if (file.pathExtension == extensions[Int(choose)! - 1]) {
-            newDirectory = newDirectory.appendingPathComponent(file.lastPathComponent)
-            print(newDirectory)
-            try fm.transferFiles(file, newDirectory)
-            newDirectory = newDirectory.deletingLastPathComponent()
-            print(newDirectory)
+        if !extensions.contains(file.pathExtension) {
+            extensions.append(file.pathExtension)
+        }
+    }
+    
+    
+    if !(extensions.isEmpty){
+        extensions.remove(at: 0)
+    }
+    
+    for ext in extensions{
+        var linha = String(1+(extensions.firstIndex(of: ext)!))
+        linha.append(" : ")
+        linha.append(ext)
+        print(linha)
+    }
+    
+    guard let fileType = readLine() else {
+        exit(0)
+    }
+    
+    let choosed = fileType.components(separatedBy: set)
+    
+    
+    for choose in choosed{
+        var newDirectory = try fm.createFolder(dirURL, extensions[Int(choose)! - 1])
+        for file in fileURLs {
+            if (file.pathExtension == extensions[Int(choose)! - 1]) {
+                newDirectory = newDirectory.appendingPathComponent(file.lastPathComponent)
+                print(newDirectory)
+                try fm.transferFiles(file, newDirectory)
+                newDirectory = newDirectory.deletingLastPathComponent()
+                print(newDirectory)
+            }
         }
     }
 }
 
-//print("""
-//---------------MENU--------------------
-//1 - TRASNFERIR ARQUIVOS
-//2 - DELETAR ARQUIVOS
-//3 - CRIAR PASTA
-//4 - EXIT
-//---------------------------------------
-//
-//
-//""")
-//let option = Int(readLine() ?? "4")
-////let fm = Controller.init()
-////switch option{
-////case 1:
-////    try fm.transferFiles()
-////case 2:
-////    try fm.deleteFiles()
-////case 3:
-////    try fm.createFolder()
-////default:
-////    print("""
-////    VOLTE SEMPRE.
-////
-////    """)
-////    exit(0)
-////
-////}
+
+let main = {
+    Group{
+        $0.command(("organize"),
+                   Option("path", default: "/Desktop/teste", description: "Type what the root path for organize"),
+                   description: "Organize the files in some path"
+        ) { path in
+            try transferAllOfType(path)
+        };
+        
+        $0.command(("list"),Option("path", default: "/Desktop/teste", description: "Type what the root path for organize"), description: "List All Files in some path"){path in
+            try listAllFiles(path)
+        }
+        
+        
+    }
+}
 
 
-import Foundation
+main().run()
 
-print("Hello, World!")
+
+
 

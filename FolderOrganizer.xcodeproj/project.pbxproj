@@ -3,13 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		853E3F02241BEA6000557D21 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853E3F01241BEA6000557D21 /* main.swift */; };
 		853E3F09241BEA8F00557D21 /* JSONReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853E3F08241BEA8F00557D21 /* JSONReader.swift */; };
 		853E3F0B241BEAA900557D21 /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853E3F0A241BEAA900557D21 /* Controller.swift */; };
+		853E3F0F241BF82B00557D21 /* Commander in Frameworks */ = {isa = PBXBuildFile; productRef = 853E3F0E241BF82B00557D21 /* Commander */; };
+		853E3F12241BF8F300557D21 /* ColorizeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 853E3F11241BF8F300557D21 /* ColorizeSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,6 +39,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				853E3F0F241BF82B00557D21 /* Commander in Frameworks */,
+				853E3F12241BF8F300557D21 /* ColorizeSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +90,10 @@
 			dependencies = (
 			);
 			name = FolderOrganizer;
+			packageProductDependencies = (
+				853E3F0E241BF82B00557D21 /* Commander */,
+				853E3F11241BF8F300557D21 /* ColorizeSwift */,
+			);
 			productName = FolderOrganizer;
 			productReference = 853E3EFE241BEA6000557D21 /* FolderOrganizer */;
 			productType = "com.apple.product-type.tool";
@@ -114,6 +122,10 @@
 				Base,
 			);
 			mainGroup = 853E3EF5241BEA6000557D21;
+			packageReferences = (
+				853E3F0D241BF82B00557D21 /* XCRemoteSwiftPackageReference "Commander" */,
+				853E3F10241BF8F300557D21 /* XCRemoteSwiftPackageReference "ColorizeSwift" */,
+			);
 			productRefGroup = 853E3EFF241BEA6000557D21 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -290,6 +302,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		853E3F0D241BF82B00557D21 /* XCRemoteSwiftPackageReference "Commander" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kylef/Commander";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.1;
+			};
+		};
+		853E3F10241BF8F300557D21 /* XCRemoteSwiftPackageReference "ColorizeSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mtynior/ColorizeSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		853E3F0E241BF82B00557D21 /* Commander */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 853E3F0D241BF82B00557D21 /* XCRemoteSwiftPackageReference "Commander" */;
+			productName = Commander;
+		};
+		853E3F11241BF8F300557D21 /* ColorizeSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 853E3F10241BF8F300557D21 /* XCRemoteSwiftPackageReference "ColorizeSwift" */;
+			productName = ColorizeSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 853E3EF6241BEA6000557D21 /* Project object */;
 }
